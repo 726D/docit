@@ -1,0 +1,6 @@
+rm ../out.html 
+git difftool -y --extcmd /home/rm/workspace/docit/docitdiff.py 0.2.5 0.2.7 >> ../out.html
+
+rm ../out.html 
+difftool -y --extcmd /home/rm/workspace/docit/docitdiff.py 0.2.5 0.2.18 >> ../out.html
+

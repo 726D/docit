@@ -10,13 +10,13 @@ def main(argv):
 
     if sys.argv[1].strip().endswith('feature') or sys.argv[2].strip().endswith('feature'):
         if sys.argv[1]=='/dev/null':
-            print "<h2 style='color:yellow'>Feature to add to documenation in file {} </h2>".format(sys.argv[2])
+            print "<h2 style='color:orange'>Feature to add to documenation in file {} </h2>".format(sys.argv[2])
             f1r = [""]
         elif sys.argv[2]=='/dev/null':
-            print "<h2 style='color:yellow'>Feature possibly to be removed from documenation in file {}</h2>".format(sys.argv[1])
+            print "<h2 style='color:orange'>Feature possibly to be removed from documenation in file {}</h2>".format(sys.argv[1])
             f2r = [""]
         else:
-            print "<h2 style='color:orange'>Feature probably to be changed in documenation in file {}</h2>".format(sys.argv[1])
+            print "<h2 style='color:red'>Feature probably to be changed in documenation in file {}</h2>".format(sys.argv[1])
 
         differ = difflib.HtmlDiff()
         t=differ.make_table(f1r,f2r)

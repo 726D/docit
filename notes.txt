@@ -1,1 +1,96 @@
- 
+#####################
+get list of not unmodified files by file suffix
+#####################
+git difftool -y --extcmd /home/rm/workspace/docit/docitdiff.py 0.2.7 0.2.18 | grep feature > ../feature
+->
+Argument List: ['/home/rm/workspace/docit/docitdiff.py', '/dev/null', '_public/reference/features.html']
+Argument List: ['/home/rm/workspace/docit/docitdiff.py', '/tmp/FKLT1e_features.rst', '/dev/null']
+...
+Argument List: ['/home/rm/workspace/docit/docitdiff.py', '/tmp/SCzrCU_fail_outline.feature', 'tests/functional/output_features/fail_outline/fail_outline.feature']     
+....
+Argument List: ['/home/rm/workspace/docit/docitdiff.py', '/tmp/ecKiQ1_success_table.feature', 'tests/functional/output_features/success_table/success_table.feature']
+...
+
+#####################
+alternative - get lists of not unmodified files by file suffix filter modification status
+#####################
+
+git --no-pager diff --name-status 0.2.7 0.2.18  | grep ^A | grep feature$                                                                                      
+------->
+A       lettuce/django/tests/functional/email.feature
+A       tests/functional/bg_features/header/header.feature
+A       tests/functional/bg_features/naked/naked.feature
+A       tests/functional/bg_features/simple/simple.feature
+A       tests/functional/language_specific_features/fr/success/dumb.feature
+A       tests/functional/language_specific_features/fr/success/outlines.feature
+A       tests/functional/language_specific_features/fr/success/outlines2.feature
+A       tests/functional/language_specific_features/fr/success/table.feature
+A       tests/functional/output_features/missing_steps/missing_steps.feature
+A       tests/functional/output_features/no_steps_defined/no_steps_defined.feature
+A       tests/functional/output_features/undefined_steps/undefined_steps.feature
+A       tests/functional/output_features/unicode_traceback/unicode_traceback.feature
+A       tests/functional/output_features/xunit_unicode_and_bytestring_mixing/xunit_unicode_and_bytestring_mixing.feature
+A       tests/functional/syntax_features/feature_missing_scenarios/feature_missing_scenarios.feature
+A       tests/integration/django/alfaces/foobar/features/deeper/deeper/leaf.feature
+A       tests/integration/django/celeries/leaves/features/foobar.feature
+A       tests/integration/django/dill/leaves/features/create.feature
+A       tests/integration/django/dill/leaves/features/existence.feature
+A       tests/integration/django/dill/leaves/features/testdb.feature
+-------> correlates -------> 
+git difftool -y --extcmd /home/rm/workspace/docit/docitdiff.py 0.2.7 0.2.18 | grep leaf.feature
+Argument List: ['/home/rm/workspace/docit/docitdiff.py', '/dev/null', 'tests/integration/django/alfaces/foobar/features/deeper/deeper/leaf.feature']
+
+
+git --no-pager diff --name-status 0.2.7 0.2.18  | grep ^M | grep feature$
+------->
+M       tests/functional/output_features/fail_outline/fail_outline.feature
+M       tests/functional/output_features/failed_table/failed_table.feature
+M       tests/functional/output_features/success_outline/success_outline.feature
+M       tests/functional/output_features/success_table/success_table.feature
+-------> correlates -------> 
+git difftool -y --extcmd /home/rm/workspace/docit/docitdiff.py 0.2.7 0.2.18 | grep success_outline.feature
+Argument List: ['/home/rm/workspace/docit/docitdiff.py', '/tmp/SaEMyv_success_outline.feature', 'tests/functional/output_features/success_outline/success_outline.feature']
+
+
+git --no-pager diff --name-status 0.2.7 0.2.5   | grep feature$
+------->
+D       tests/integration/django/chive/features/crash.feature
+-------> correlates -------> 
+git difftool -y --extcmd /home/rm/workspace/docit/docitdiff.py 0.2.7 0.2.5 | grep crash.feature
+Argument List: ['/home/rm/workspace/docit/docitdiff.py', 'tests/integration/django/chive/features/crash.feature', '/dev/null']
+
+
+
+git --no-pager diff --name-status 0.2.5 0.2.7   | grep feature$
+------->
+A       tests/integration/django/chive/features/crash.feature
+-------> correlates -------> 
+git difftool -y --extcmd /home/rm/workspace/docit/docitdiff.py 0.2.5 0.2.7 | grep crash.feature
+Argument List: ['/home/rm/workspace/docit/docitdiff.py', '/dev/null', 'tests/integration/django/chive/features/crash.feature']
+
+
+Save in one file sorted by status  
+git --no-pager diff --name-status 0.2.7 0.2.18  | grep feature$ | sort > byStatus
+A       lettuce/django/tests/functional/email.feature
+..
+M       tests/functional/output_features/fail_outline/fail_outline.feature
+.
+
+-> process this file line by line
+
+alternative step 2 
+
+git difftool -y --extcmd /home/rm/workspace/docit/docitdiff.py 0.2.7 0.2.18   tests/functional/output_features/fail_outline/fail_outline.feature
+
+
+---------------------------
+
+A -> yellow : Take a look if additional documentation is needed
+
+M -> red : Take a at the exiting documentation 
+
+D -> yellow : Take a look if documentation can be reduced
+
+not containend in AMD-List : Should not be shown as checking woul cause unnecessary work -> green : not changed, do not touch
+
+
